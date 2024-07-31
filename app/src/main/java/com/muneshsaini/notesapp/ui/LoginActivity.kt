@@ -72,15 +72,10 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    Log.d("Fire89", "signInWithCredential:success")
-
                     SharedPref.putBoolean(PrefConstant.IS_USER_LOGGED_IN, true)
-
                     val user = auth.currentUser
-
                     startActivity(Intent(this, MainActivity::class.java))
-
-                    Log.d("Fire89", "firebaseAuthWithGoogle: ${user?.displayName}")
+                    finish()
 
                 } else {
                     Log.w("Fire89", "signInWithCredential:failure", task.exception)

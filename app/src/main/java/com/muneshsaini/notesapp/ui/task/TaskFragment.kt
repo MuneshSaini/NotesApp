@@ -1,6 +1,7 @@
 package com.muneshsaini.notesapp.ui.task
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -16,8 +17,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.muneshsaini.notesapp.R
 import com.muneshsaini.notesapp.databinding.FragmentTaskBinding
+import com.muneshsaini.notesapp.ui.LoginActivity
+import com.muneshsaini.notesapp.ui.PrefConstant
+import com.muneshsaini.notesapp.ui.SharedPref
 import com.muneshsaini.notesapp.viewmodel.TaskViewModel
 
 class TaskFragment : Fragment() {
@@ -110,9 +115,19 @@ class TaskFragment : Fragment() {
                 tasks -> adapter.submitList(tasks)
             })
             R.id.action_delete_all -> deleteAllItem()
+            R.id.log_out -> logOutFun()
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun logOutFun() {
+        SharedPref.putBoolean(PrefConstant.IS_USER_LOGGED_IN, false)
+        FirebaseAuth.getInstance().signOut()
+        val intent = Intent(requireActivity(), LoginActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
+    }
+
     private fun deleteAllItem() {
         AlertDialog.Builder(requireContext())
             .setTitle("Delete All")
